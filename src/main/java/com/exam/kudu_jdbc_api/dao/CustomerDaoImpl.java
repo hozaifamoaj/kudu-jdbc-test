@@ -118,19 +118,22 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao{
         Customer customer = null;
         try {
             String sql = "SELECT * FROM customer_info WHERE id = ?";
-            customer = getJdbcTemplate()
+            customer = (Customer)getJdbcTemplate()
                     .queryForObject(sql,
                             new Object[]{custid},
-                            (rs, rwNumber) -> {
-                                Customer customer1 = new Customer();
-                                customer1.setId( rs.getInt("id"));
-                                customer1.setName( rs.getString("name"));
-                                customer1.setAge( rs.getInt("age"));
-                                customer1.setAddress( rs.getString("address"));
-                                customer1.setSalary( rs.getInt("salary"));
-                                customer1.setCreatedAt(rs.getLong("created_at"));
-                                customer1.setUpdatedAt( rs.getLong("updated_at"));
-                                return customer1;
+                            new RowMapper<Customer>(){
+                                @Override
+                                public Customer mapRow(ResultSet rs, int rwNumber) throws SQLException {
+                                    Customer customer = new Customer();
+                                    customer.setId( rs.getInt("id"));
+                                    customer.setName( rs.getString("name"));
+                                    customer.setAge( rs.getInt("age"));
+                                    customer.setAddress( rs.getString("address"));
+                                    customer.setSalary( rs.getInt("salary"));
+                                    customer.setCreatedAt(rs.getLong("created_at"));
+                                    customer.setUpdatedAt( rs.getLong("updated_at"));
+                                    return customer;
+                                }
                             });
         } catch (Exception e) {
             e.printStackTrace();
