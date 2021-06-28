@@ -136,7 +136,7 @@ public class CustomerDaoImpl extends JdbcDaoSupport implements CustomerDao{
                                 }
                             });
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return customer;
     }
